@@ -8,36 +8,33 @@ import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
 
-// Handle preflight OPTIONS requests for Chrome compatibility (Express 5 compatible)
+// CORS configuration optimized for Chrome PATCH requests
 const allowedOrigins = [
   "http://localhost:5173",
   "https://purple-merit-rho.vercel.app",
 ];
 
-app.use((req, res, next) => {
-  if (req.method === "OPTIONS") {
-    const origin = req.headers.origin;
-    if (origin && allowedOrigins.includes(origin)) {
-      res.header("Access-Control-Allow-Origin", origin);
-      res.header("Access-Control-Allow-Credentials", "true");
-      res.header(
-        "Access-Control-Allow-Methods",
-        "GET, POST, PUT, PATCH, DELETE, OPTIONS"
-      );
-      res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-      res.header("Access-Control-Max-Age", "86400"); // 24 hours
-      return res.sendStatus(204);
-    }
-  }
-  next();
-});
-
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://purple-merit-rho.vercel.app"],
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like Postman, curl, etc.)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "X-Requested-With",
+      "Accept",
+      "Origin",
+    ],
+    exposedHeaders: ["Content-Type"],
     preflightContinue: false,
     optionsSuccessStatus: 204,
   })
