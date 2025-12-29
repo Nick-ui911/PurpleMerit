@@ -7,15 +7,26 @@ import adminRoutes from "./routes/adminRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
-app.use(
+
+// Handle preflight OPTIONS requests for Chrome compatibility
+app.options(
+  "*",
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://purple-merit-rho.vercel.app",
-    ],
+    origin: ["http://localhost:5173", "https://purple-merit-rho.vercel.app"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://purple-merit-rho.vercel.app"],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
   })
 );
 
