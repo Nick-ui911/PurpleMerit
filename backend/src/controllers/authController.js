@@ -4,7 +4,7 @@ import prisma from "../utils/prisma.js";
 
 export const COOKIE_OPTIONS = {
   httpOnly: true,
-  secure: true,     
+  secure: true,
   sameSite: "none",
   maxAge: 24 * 60 * 60 * 1000,
 };
@@ -77,15 +77,13 @@ export const login = async (req, res) => {
     { expiresIn: "1d" }
   );
 
-  res
-    .cookie("token", token, COOKIE_OPTIONS)
-    .json({
-      message: "Login successful",
-      user: sanitizeUser(user),
-    });
+  res.cookie("token", token, COOKIE_OPTIONS).json({
+    message: "Login successful",
+    user: sanitizeUser(user),
+  });
 };
 
 export const logout = async (req, res) => {
-  res.clearCookie("token");
+  res.clearCookie("token", COOKIE_OPTIONS);
   res.json({ message: "Logged out successfully" });
 };
