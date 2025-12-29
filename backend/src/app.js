@@ -11,8 +11,13 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://purple-merit-rho.vercel.app"],
+    origin: [
+      "http://localhost:5173",
+      "https://purple-merit-rho.vercel.app",
+    ],
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 app.use(cookieParser());
