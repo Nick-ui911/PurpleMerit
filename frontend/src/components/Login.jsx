@@ -23,7 +23,7 @@ export default function Login() {
 
     try {
       setLoading(true);
-      await api.post("/auth/login", { email, password });
+      await api.post("/auth/login", { email, password },{ withCredentials: true });
 
       const res = await api.get("/users/profile");
       dispatch(setUser(res.data));

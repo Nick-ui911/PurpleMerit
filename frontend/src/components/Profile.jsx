@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import api from "../services/api";
 import toast from "react-hot-toast";
 import ButtonLoader from "./ButtonLoader";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function Profile() {
   const [user, setUser] = useState({});
   const [passwords, setPasswords] = useState({ old: "", new: "" });
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
 
   useEffect(() => {
     api.get("/users/profile").then(res => setUser(res.data));
@@ -114,24 +117,42 @@ export default function Profile() {
               <label className="block text-sm font-semibold text-slate-700 mb-2">
                 Current Password
               </label>
-              <input
-                className="w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-red-500 focus:outline-none transition-colors text-slate-800"
-                type="password"
-                placeholder="Enter current password"
-                onChange={(e) => setPasswords({ ...passwords, old: e.target.value })}
-              />
+              <div className="relative">
+                <input
+                  className="w-full px-4 py-3 pr-12 border-2 border-slate-200 rounded-lg focus:border-red-500 focus:outline-none transition-colors text-slate-800"
+                  type={showOldPassword ? "text" : "password"}
+                  placeholder="Enter current password"
+                  onChange={(e) => setPasswords({ ...passwords, old: e.target.value })}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowOldPassword(!showOldPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-700 transition-colors"
+                >
+                  {showOldPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
             </div>
 
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-2">
                 New Password
               </label>
-              <input
-                className="w-full px-4 py-3 border-2 border-slate-200 rounded-lg focus:border-red-500 focus:outline-none transition-colors text-slate-800"
-                type="password"
-                placeholder="Enter new password"
-                onChange={(e) => setPasswords({ ...passwords, new: e.target.value })}
-              />
+              <div className="relative">
+                <input
+                  className="w-full px-4 py-3 pr-12 border-2 border-slate-200 rounded-lg focus:border-red-500 focus:outline-none transition-colors text-slate-800"
+                  type={showNewPassword ? "text" : "password"}
+                  placeholder="Enter new password"
+                  onChange={(e) => setPasswords({ ...passwords, new: e.target.value })}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-700 transition-colors"
+                >
+                  {showNewPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
             </div>
           </div>
 

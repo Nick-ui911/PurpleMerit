@@ -1,4 +1,9 @@
 Purple Merit Technologies – Backend Intern Assessment
+
+## 🎥 Walkthrough Video (Assessment)
+https://youtu.be/xuaUTce_ePU (Unlisted)
+
+
 📌 Project Overview
 
 This project is a full-stack User Management System built as part of the Backend Intern assessment for Purple Merit Technologies.
